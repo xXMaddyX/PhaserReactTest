@@ -4,15 +4,17 @@ import { useEffect, useRef } from "react";
 
 function Game() {
     const gameRef = useRef(null);
+
     useEffect(() => {
         if (!gameRef.current) {
             gameRef.current = new Phaser.Game({
                 type: Phaser.WEBGL,
                 pixelArt: true,
                 scale: {
-                    mode: Phaser.DOM.RESIZE,
-                    width: 1920,
-                    height: 1080,
+                    mode: Phaser.Scale.RESIZE,
+                    autoCenter: Phaser.Scale.CENTER_BOTH,
+                    width: window.innerWidth,
+                    height: window.innerHeight,
                 },
                 physics: {
                     default: "arcade",
@@ -23,11 +25,21 @@ function Game() {
                 scene: [new Scene1(this)],
             });
         }
+
+        const handleResize = () => {
+            if (gameRef.current) {
+                gameRef.current.scale.resize(window.innerWidth, window.innerHeight);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
         return () => {
             if (gameRef.current) {
                 gameRef.current.destroy(true);
                 gameRef.current = null;
             }
+            window.removeEventListener('resize', handleResize);
         };
     }, []);
 
