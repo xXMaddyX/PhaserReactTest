@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-import Scene1 from "./testScene";
+import TitelScene from "./scenes/TitleScreen";
+import SceneLvL1 from "./scenes/MainMap";
 import { useEffect, useRef } from "react";
 
 function Game() {
@@ -12,16 +13,19 @@ function Game() {
                 scale: {
                     parent: "phaser-game",
                     mode: Phaser.Scale.FIT,
-                    width: 1280,
-                    height: 720,
+                    width: 1920,
+                    height: 1080,
                 },
                 physics: {
                     default: "arcade",
                     arcade: {
-                        gravity: { y: 200 },
+                        gravity: -200,
                     }
                 },
-                scene: [new Scene1(this)],
+                scene: [
+                    new TitelScene(this),
+                    new SceneLvL1(this)
+                ],
             });
         }
         return () => {
